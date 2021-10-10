@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import CatchButton from "../CatchButton/CatchButton";
 
 function PokemonDetails({ selectedPokemon }) {
   const [pokemonData, setPokemonData] = useState({});
@@ -16,7 +17,6 @@ function PokemonDetails({ selectedPokemon }) {
     try {
       setLoadingMessage("Loading...");
       const result = await axios.get(url);
-      console.log(result.data.species);
       setPokemonData(result.data);
       setLoadingMessage("");
     } catch (err) {
@@ -34,20 +34,26 @@ function PokemonDetails({ selectedPokemon }) {
         <div className="pokemon-container">
           <div className="pokemon-code">#{pokemonData.id}</div>
           <div className="pokemon-name">{pokemonData.name}</div>
-          <img alt={pokemonData.name} src={pokemonData.sprites.front_default} />
+          <img
+            alt={pokemonData.name}
+            src={pokemonData.sprites.other["official-artwork"]["front_default"]}
+          />
 
           <div className="pokemon-height">Height: {pokemonData.height}</div>
           <div className="pokemon-weight">Weight: {pokemonData.weight}</div>
+          <h3>Types</h3>
           <div className="pokemon-types">
-            {pokemonData.types.map(({ type }) => (
-              <li>{type.name}</li>
+            {pokemonData.types.map(({ type }, index) => (
+              <li key={index}>{type.name}</li>
             ))}
           </div>
+          <h3>Abilities</h3>
           <div className="pokemon-abilities">
-            {pokemonData.abilities.map(({ ability }) => (
-              <li>{ability.name}</li>
+            {pokemonData.abilities.map(({ ability }, index) => (
+              <li key={index}>{ability.name}</li>
             ))}
           </div>
+          <CatchButton pokemonName={pokemonData.name} />
         </div>
       )}
     </div>
