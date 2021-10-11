@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import PokemonListItem from "../PokemonListItem/PokemonListItem";
 import FilterButtons from "../FilterButtons/FilterButtons";
 import SearchInput from "../SearchInput/SearchInput";
 import { getPokemonList } from "../../services/pokemonListService";
-import { isPokemonCaught } from "../../services/catchService";
-import { escapeRegularExpression } from "../../utils/regularexpression";
+import { escapeRegularExpression as escapeRegExp } from "../../utils/regularexpression";
+import MyPokemonContext from "../../context/MyPokemonContext";
+
+import "./PokemonList.css";
 
 function PokemonList({ selectedPokemon, setSelectedPokemon }) {
   const [pokemonList, setPokemonList] = useState([]);
   const [loadingMessage, setLoadingMessage] = useState("Loading...");
-
   const [filterName, setFilterName] = useState(null);
   const [searchText, setSearchText] = useState("");
 
-  const refreshList = () => {};
+  const { myPokemonArray } = useContext(MyPokemonContext);
 
   useEffect(() => {
     setLoadingMessage("Loading...");
@@ -23,11 +24,11 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
         // Apply filter based on Selected button
         if (filterName === "Show Caught") {
           return pokemonArray.filter((pokemon) =>
-            isPokemonCaught(pokemon.name)
+            myPokemonArray.includes(pokemon.name)
           );
         } else if (filterName === "Show Free") {
           return pokemonArray.filter(
-            (pokemon) => !isPokemonCaught(pokemon.name)
+            (pokemon) => !myPokemonArray.includes(pokemon.name)
           );
         } else {
           return pokemonArray;
@@ -36,10 +37,7 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
       .then((pokemonArray) => {
         // Apply filter by search text
         if (searchText) {
-          const searchRegExp = new RegExp(
-            escapeRegularExpression(searchText),
-            "i"
-          );
+          const searchRegExp = new RegExp(escapeRegExp(searchText), "i");
           return pokemonArray.filter((pokemon) =>
             searchRegExp.test(pokemon.name)
           );
@@ -49,11 +47,10 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
       })
       .then((pokemonArray) => setPokemonList(pokemonArray));
     setLoadingMessage("");
-    // setSelectedPokemon(null);
-  }, [filterName, searchText]);
+  }, [filterName, searchText, myPokemonArray]);
 
   return (
-    <div>
+    <div className="pokemon-list">
       <SearchInput searchText={searchText} setSearchText={setSearchText} />
       <FilterButtons setFilterName={setFilterName} />
       {pokemonList.length === 0 ? (
@@ -64,6 +61,12 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
             {pokemonList.map((pokemon, index) => {
               return (
                 <li
+                  className={`${
+                    selectedPokemon !== null &&
+                    selectedPokemon.name === pokemon.name
+                      ? `pokemon-selected`
+                      : ""
+                  } pokemon-item`}
                   key={index}
                   onClick={() => {
                     setSelectedPokemon(pokemon);
