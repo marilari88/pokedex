@@ -1,0 +1,24 @@
+.filter-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7em 0;
+}
+
+.filter-buttons button:first-child {
+  border-radius: 5px 0px 0px 5px !important;
+}
+
+.filter-buttons button:nth-child(2) {
+  border-radius: 0px !important;
+}
+
+.filter-buttons button:nth-child(3) {
+  border-radius: 0px 5px 5px 0px !important;
+}
+
+.selected-button {
+  background-color: #ddd;
+}

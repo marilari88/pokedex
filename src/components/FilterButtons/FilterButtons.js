@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import "./FilterButtons.css";
 
 function FilterButtons({ setFilterName }) {
   const [selectedButton, setSelectedButton] = useState("Show all");
@@ -9,10 +10,25 @@ function FilterButtons({ setFilterName }) {
   };
 
   return (
-    <div>
-      <button onClick={handleClick}>Show all</button>
-      <button onClick={handleClick}>Show Caught</button>
-      <button onClick={handleClick}>Show Free </button>
+    <div className="filter-buttons">
+      <button
+        className={selectedButton === "Show all" ? `selected-button` : ""}
+        onClick={handleClick}
+      >
+        Show all
+      </button>
+      <button
+        className={selectedButton === "Show Caught" ? `selected-button` : ""}
+        onClick={handleClick}
+      >
+        Show Caught
+      </button>
+      <button
+        className={selectedButton === "Show Free" ? `selected-button` : ""}
+        onClick={handleClick}
+      >
+        Show Free
+      </button>
     </div>
   );
 }

@@ -6,3 +6,9 @@ it("show pokemon name", () => {
   render(<PokemonListItem pokemon={mockPokemon} />);
   expect(screen.getByText(/ditto/i)).toBeInTheDocument();
 });
+
+it("Uppercase name pokemon", () => {
+  const mockPokemon = { name: "ditto" };
+  render(<PokemonListItem pokemon={mockPokemon} />);
+  expect(screen.getByText(/Ditto/)).toBeInTheDocument();
+});

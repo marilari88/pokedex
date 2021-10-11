@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import "./PokemonDetails.css";
 import axios from "axios";
 import CatchButton from "../CatchButton/CatchButton";
+import { capitalize } from "../../utils/string";
 
 function PokemonDetails({ selectedPokemon }) {
   const [pokemonData, setPokemonData] = useState({});
@@ -29,12 +31,14 @@ function PokemonDetails({ selectedPokemon }) {
   }
 
   return (
-    <div>
+    <div className="pokemon-details">
       {loadingMessage || (
         <div className="pokemon-container">
-          <div className="pokemon-code">#{pokemonData.id}</div>
-          <div className="pokemon-name">{pokemonData.name}</div>
+          <div className="pokemon-name">
+            #{pokemonData.id} {capitalize(pokemonData.name)}
+          </div>
           <img
+            className="pokemon-image"
             alt={pokemonData.name}
             src={pokemonData.sprites.other["official-artwork"]["front_default"]}
           />
