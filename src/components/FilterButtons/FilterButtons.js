@@ -20,5 +20,5 @@ function FilterButtons({ setFilterName }) {
 export default FilterButtons;
 
 FilterButtons.propTypes = {
-  setFilterfunc: PropTypes.func,
+  setFilterName: PropTypes.func,
 };

@@ -24,9 +24,11 @@ function CatchButton({ pokemonName }) {
 
   return (
     <div>
-      <button onClick={() => catchToggle()}>
-        {!isCaught ? `Catch It` : `Free it`}
-      </button>
+      {isCaught !== null && (
+        <button onClick={() => catchToggle()}>
+          {!isCaught ? `Catch It` : `Free it`}
+        </button>
+      )}
     </div>
   );
 }
