@@ -4,7 +4,7 @@ import axios from "axios";
 import CatchButton from "../CatchButton/CatchButton";
 import PokemonImage from "../PokemonImage/PokemonImage";
 import MyPokemonContext from "../../context/MyPokemonContext";
-import { capitalize } from "../../utils/string";
+import { capitalize, leftPad } from "../../utils/string";
 
 function PokemonDetails({ selectedPokemon }) {
   const [pokemonData, setPokemonData] = useState({});
@@ -65,7 +65,7 @@ function PokemonDetails({ selectedPokemon }) {
     <div className="pokemon-details">
       <div className="pokemon-container">
         <div className="pokemon-name">
-          #{pokemonData.id} {capitalize(pokemonData.name)}
+          #{leftPad(pokemonData.id, 3)} {capitalize(pokemonData.name)}
         </div>
         <PokemonImage
           pokemonImageUrl={
