@@ -73,18 +73,22 @@ function PokemonDetails({ selectedPokemon }) {
           }
           pokemonName={pokemonData.name}
         />
-        <div className="pokemon-height">Height: {pokemonData.height}</div>
-        <div className="pokemon-weight">Weight: {pokemonData.weight}</div>
+        <div className="pokemon-height">
+          <span className="label">Height:</span> {pokemonData.height / 10} m
+        </div>
+        <div className="pokemon-weight">
+          <span className="label">Weight:</span> {pokemonData.weight / 10} Kg
+        </div>
         <h3>Types</h3>
         <ul className="pokemon-types">
           {pokemonData.types.map(({ type }, index) => (
-            <li key={index}>{type.name}</li>
+            <li key={index}>{capitalize(type.name)}</li>
           ))}
         </ul>
         <h3>Abilities</h3>
         <ul className="pokemon-abilities">
           {pokemonData.abilities.map(({ ability }, index) => (
-            <li key={index}>{ability.name}</li>
+            <li key={index}>{capitalize(ability.name)}</li>
           ))}
         </ul>
         <h3>Status</h3>

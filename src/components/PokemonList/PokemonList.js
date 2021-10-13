@@ -58,7 +58,7 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
         <FilterButtons setFilterName={setFilterName} />
       </div>
       {pokemonList.length === 0 ? (
-        <div>{loadingMessage}</div>
+        <div className="list-message">{loadingMessage}</div>
       ) : (
         <>
           <ul className="pokemon-list">

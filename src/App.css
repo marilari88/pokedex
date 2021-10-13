@@ -28,9 +28,20 @@ main {
 
 footer {
   width: 100%;
-  text-align: center;
   background-color: #ee1515;
   color: white;
-  line-height: 4em;
   height: 4em;
+  font-size: 0.8rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+footer a:link,
+footer a:visited {
+  color: white;
+}
+footer a:hover {
+  color: #ddd;
 }

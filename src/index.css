@@ -23,5 +23,12 @@ button {
   cursor: pointer;
   outline: none;
   box-shadow: none;
-  border: 1px solid #999;
+  border: 0px solid #999;
+  background-color: #aaa;
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #bbb;
 }

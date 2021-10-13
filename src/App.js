@@ -48,9 +48,11 @@ function App() {
           <PokemonDetails selectedPokemon={selectedPokemon} />
         </main>
         <footer>
-          Developed by Marco Ilari -{" "}
-          <a href="https://marcoilari.dev">https://marcoilari.dev</a>-
-          marilari88@gmail.com
+          <div className="signature">
+            Developed by Marco Ilari -{" "}
+            <a href="https://marcoilari.dev">https://marcoilari.dev</a>-
+            marilari88@gmail.com
+          </div>
         </footer>
       </div>
     </MyPokemonContext.Provider>

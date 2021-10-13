@@ -1,12 +1,24 @@
-.pokemon-list {
-  padding: 2em 0;
+.sidebar {
+  background-color: #f0f0f0;
+  padding: 1em 0;
   box-sizing: border-box;
   width: 300px;
-  overflow-y: scroll;
   height: 100%;
-  font-size: 1rem;
-  background-color: #f0f0f0;
-  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pokemon-logo {
+  padding: 0em 5em;
+}
+
+.filter-container {
+  padding: 1em 0;
+}
+
+.pokemon-list {
+  flex: 1;
+  overflow-y: scroll;
 }
 
 .pokemon-item {
@@ -21,6 +33,14 @@
 }
 
 .pokemon-selected {
-  background-color: #aaa;
-  color: white;
+  background-color: #ddd;
+}
+
+.list-message {
+  color: #444;
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
