@@ -1,28 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
-import MyPokemonContext from "../../context/MyPokemonContext";
+import React from "react";
 import PropTypes from "prop-types";
 
-function CatchButton({ pokemonName }) {
-  const { myPokemonArray, setMyPokemonArray } = useContext(MyPokemonContext);
-  const [isCaught, setIsCaught] = useState(null);
-
-  useEffect(() => {
-    if (myPokemonArray) setIsCaught(myPokemonArray.includes(pokemonName));
-  }, [pokemonName, myPokemonArray]);
-
-  const catchToggle = () => {
-    if (!isCaught) {
-      setMyPokemonArray({ type: "add", payload: pokemonName });
-    } else {
-      setMyPokemonArray({ type: "remove", payload: pokemonName });
-    }
-    setIsCaught((prevState) => !prevState);
+function CatchButton({ isCaught, catchToggle }) {
+  const handleClick = (e) => {
+    e.stopPropagation();
+    catchToggle();
   };
 
   return (
     <>
       {isCaught !== null && (
-        <button onClick={() => catchToggle()}>
+        <button onClick={handleClick}>
           {!isCaught ? `Catch It` : `Free it`}
         </button>
       )}
@@ -33,5 +21,6 @@ function CatchButton({ pokemonName }) {
 export default CatchButton;
 
 CatchButton.propTypes = {
-  pokemonName: PropTypes.string.isRequired,
+  isCaught: PropTypes.bool,
+  catchToggle: PropTypes.func,
 };
