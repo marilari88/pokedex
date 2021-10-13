@@ -8,6 +8,7 @@ import { escapeRegularExpression as escapeRegExp } from "../../utils/regularexpr
 import MyPokemonContext from "../../context/MyPokemonContext";
 
 import "./PokemonList.css";
+import PokemonLogo from "../../assets/pokemon_logo.svg";
 
 function PokemonList({ selectedPokemon, setSelectedPokemon }) {
   const [pokemonList, setPokemonList] = useState([]);
@@ -50,14 +51,17 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
   }, [filterName, searchText, myPokemonArray]);
 
   return (
-    <div className="pokemon-list">
-      <SearchInput searchText={searchText} setSearchText={setSearchText} />
-      <FilterButtons setFilterName={setFilterName} />
+    <div className="sidebar">
+      <img className="pokemon-logo" src={PokemonLogo} alt="Pokemon" />
+      <div className="filter-container">
+        <SearchInput searchText={searchText} setSearchText={setSearchText} />
+        <FilterButtons setFilterName={setFilterName} />
+      </div>
       {pokemonList.length === 0 ? (
         <div>{loadingMessage}</div>
       ) : (
         <>
-          <ul>
+          <ul className="pokemon-list">
             {pokemonList.map((pokemon, index) => {
               return (
                 <li
