@@ -2,15 +2,23 @@ import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CatchButton from "./CatchButton";
 
-describe("Testing button behavior", () => {
-  it("Show button text if the pokemon is not catched", () => {
-    render(<CatchButton pokemonName="bulbasaur" />);
-    expect(screen.getByRole("button")).toHaveTextContent(/Catch it/i);
+describe("Testing initial rendering", () => {
+  it("Show 'Free it' if pokemon is caught", () => {
+    const { getByRole } = render(<CatchButton isCaught={true} />);
+    expect(getByRole("button")).toHaveTextContent(/free it/i);
   });
 
-  it("Change button text on click", async () => {
-    render(<CatchButton pokemonName="bulbasaur" />);
+  it("Show 'Caught it' if pokemon is free", () => {
+    const { getByRole } = render(<CatchButton isCaught={false} />);
+    expect(getByRole("button")).toHaveTextContent(/catch it/i);
+  });
+});
+
+describe("Testing button behavior", () => {
+  it("Toggle Catch to be called", () => {
+    const toggleCatchMock = jest.fn();
+    render(<CatchButton isCaught={true} catchToggle={toggleCatchMock} />);
     userEvent.click(screen.getByRole("button"));
-    expect(await screen.findByText(/free it/i)).toBeInTheDocument();
+    expect(toggleCatchMock).toHaveBeenCalled();
   });
 });

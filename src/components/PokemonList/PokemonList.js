@@ -46,8 +46,11 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
           return pokemonArray;
         }
       })
-      .then((pokemonArray) => setPokemonList(pokemonArray));
-    setLoadingMessage("");
+      .then((pokemonArray) => {
+        setPokemonList(pokemonArray);
+        setLoadingMessage("");
+      })
+      .catch((err) => setLoadingMessage(`Error: ${err}`));
   }, [filterName, searchText, myPokemonArray]);
 
   return (
@@ -72,6 +75,7 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
                       : ""
                   } pokemon-item`}
                   key={index}
+                  data-testid={`li-${pokemon.name}`}
                   onClick={() => {
                     setSelectedPokemon(pokemon);
                   }}

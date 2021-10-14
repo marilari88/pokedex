@@ -5,8 +5,8 @@ import "./FilterButtons.css";
 function FilterButtons({ setFilterName }) {
   const [selectedButton, setSelectedButton] = useState("Show all");
   const handleClick = ({ target }) => {
-    setSelectedButton(target.innerText);
-    setFilterName(target.innerText);
+    setSelectedButton(target.textContent);
+    setFilterName(target.textContent);
   };
 
   return (

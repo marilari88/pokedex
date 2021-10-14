@@ -15,7 +15,9 @@ function SearchInput({ searchText, setSearchText }) {
         onChange={handleChange}
         value={searchText}
       />
-      <button onClick={() => setSearchText("")}>X</button>
+      <button onClick={() => setSearchText("")} data-testid="reset-search">
+        X
+      </button>
     </div>
   );
 }

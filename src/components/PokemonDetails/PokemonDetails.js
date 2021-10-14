@@ -4,6 +4,7 @@ import axios from "axios";
 import CatchButton from "../CatchButton/CatchButton";
 import PokemonImage from "../PokemonImage/PokemonImage";
 import MyPokemonContext from "../../context/MyPokemonContext";
+import PropTypes from "prop-types";
 import { capitalize, leftPad } from "../../utils/string";
 
 function PokemonDetails({ selectedPokemon }) {
@@ -102,3 +103,7 @@ function PokemonDetails({ selectedPokemon }) {
 }
 
 export default PokemonDetails;
+
+PokemonDetails.propTypes = {
+  selectedPokemon: PropTypes.object,
+};
