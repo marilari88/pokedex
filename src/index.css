@@ -8,6 +8,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #ee1515;
+  font-size: clamp(0.7rem, 2vw, 1rem);
 }
 
 ul {
