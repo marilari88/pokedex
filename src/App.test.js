@@ -1,7 +1,7 @@
 import {
-  queryByTestId,
   render,
   waitForElementToBeRemoved,
+  screen,
 } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
@@ -42,5 +42,21 @@ describe("Test 'Catch it' button", () => {
       userEvent.click(await findByTestId("ivysaur-details-button"));
       await waitForElementToBeRemoved(() => queryByTestId("li-ivysaur"));
     });
+  });
+});
+
+describe("Search for a pokemon", () => {
+  it("Search for ivysaur", async () => {
+    const { getByPlaceholderText, findByText, queryByText } = render(<App />);
+    userEvent.type(getByPlaceholderText(/search pokemon by name/i), "ivysaur");
+    expect(await findByText(/ivysaur/i)).toBeInTheDocument();
+    expect(queryByText(/bulbasaur/i)).not.toBeInTheDocument();
+  });
+
+  it("Search for charizard. Ivysaur should disappear", async () => {
+    const { getByPlaceholderText, queryByText, findByText } = render(<App />);
+    userEvent.type(getByPlaceholderText(/search pokemon by name/i), "char");
+    expect(await findByText(/charizard/i)).toBeInTheDocument();
+    expect(queryByText(/ivysaur/i)).not.toBeInTheDocument();
   });
 });
