@@ -1,8 +1,4 @@
-import {
-  render,
-  waitForElementToBeRemoved,
-  screen,
-} from "@testing-library/react";
+import { render, waitForElementToBeRemoved } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
