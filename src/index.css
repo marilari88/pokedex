@@ -7,7 +7,7 @@ body {
   font-family: "Mukta", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #ee1515;
+  background-color: #e63946;
   font-size: clamp(0.7rem, 2vw, 1rem);
 }
 

@@ -8,7 +8,7 @@
 header {
   width: 100%;
   text-align: center;
-  background-color: #ee1515;
+  background-color: #e63946;
   color: white;
   line-height: 4em;
   height: 4em;
@@ -28,7 +28,7 @@ main {
 
 footer {
   width: 100%;
-  background-color: #ee1515;
+  background-color: #e63946;
   color: white;
   height: 4em;
   font-size: 0.8rem;
