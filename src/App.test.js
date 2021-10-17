@@ -1,9 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import {
+  queryByTestId,
+  render,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import App from "./App";
-import axios from "axios";
 import userEvent from "@testing-library/user-event";
-
-jest.mock("axios");
+import { act } from "react-dom/test-utils";
 
 describe("Application initial rendering", () => {
   it("Show application title", () => {
@@ -13,34 +15,32 @@ describe("Application initial rendering", () => {
 });
 
 describe("Select a pokemon from the list", () => {
-  it("Select ditto from the list", async () => {
-    let listResponse = {
-      status: 200,
-      data: {
-        results: [
-          { name: "ditto", url: "fakeurl" },
-          { name: "bulbasaur", url: "fakeurl" },
-        ],
-      },
-    };
-    let pokemonResponse = {
-      status: 200,
-      data: {
-        id: "132",
-        name: "ditto",
-        height: "30",
-        weight: "40",
-        types: ["normal"],
-        abilities: ["Limber", "Imposter"],
-      },
-    };
-
-    const getPokemenDetails = jest.fn();
-    axios.get.mockImplementation(() => Promise.resolve(listResponse));
+  it("Select ivysaur from the list", async () => {
     const { findByText } = render(<App />);
-    expect(await findByText(/ditto/i)).toBeInTheDocument();
-    axios.get.mockImplementation(() => Promise.resolve(pokemonResponse));
-    userEvent.click(await findByText(/ditto/i));
-    expect(await findByText(/#132/)).toBeInTheDocument();
+    expect(await findByText(/ivysaur/i)).toBeInTheDocument();
+    userEvent.click(await findByText(/ivysaur/i));
+    expect(await findByText(/#002/)).toBeInTheDocument();
+  });
+});
+
+describe("Click on 'Show Caught list'", () => {
+  it("Show empty list message", async () => {
+    const { findByRole, findByText } = render(<App />);
+    userEvent.click(await findByRole("button", { name: /show caught/i }));
+    expect(await findByText(/empty/i)).toBeInTheDocument();
+  });
+});
+
+describe("Test 'Catch it' button", () => {
+  it("Ivysaur should disappear from 'show free' list", async () => {
+    const { findByRole, findByText, findByTestId, queryByTestId } = render(
+      <App />
+    );
+    await act(async () => {
+      userEvent.click(await findByRole("button", { name: /show free/i }));
+      userEvent.click(await findByText(/ivysaur/i));
+      userEvent.click(await findByTestId("ivysaur-details-button"));
+      await waitForElementToBeRemoved(() => queryByTestId("li-ivysaur"));
+    });
   });
 });

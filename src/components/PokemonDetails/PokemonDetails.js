@@ -29,22 +29,33 @@ function PokemonDetails({ selectedPokemon }) {
   };
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+    let isSubscribed = true;
+    // fetching pokemon details from api
+    const getPokemenDetails = async (url) => {
+      try {
+        setLoadingMessage("Loading...");
+        const result = await axios.get(url, {
+          cancelToken: source.token,
+        });
+        if (isSubscribed) {
+          setPokemonData(result.data);
+          setLoadingMessage("");
+        }
+      } catch (err) {
+        if (isSubscribed)
+          setLoadingMessage(`Error! Cannot retrieve Pokemon Details:  ${err}`);
+      }
+    };
+
     if (selectedPokemon) {
       getPokemenDetails(selectedPokemon.url);
     }
+    return () => {
+      isSubscribed = false;
+      source.cancel();
+    };
   }, [selectedPokemon]);
-
-  // fetching pokemon details from api
-  const getPokemenDetails = async (url) => {
-    try {
-      setLoadingMessage("Loading...");
-      const result = await axios.get(url);
-      setPokemonData(result.data);
-      setLoadingMessage("");
-    } catch (err) {
-      setLoadingMessage("Error! Cannot retrieve Pokemon Details: " + err);
-    }
-  };
 
   if (!selectedPokemon) {
     return (
@@ -57,7 +68,7 @@ function PokemonDetails({ selectedPokemon }) {
   if (loadingMessage) {
     return (
       <div className="pokemon-container">
-        <div className="message">Loading</div>
+        <div className="message">{loadingMessage}</div>
       </div>
     );
   }
@@ -95,7 +106,11 @@ function PokemonDetails({ selectedPokemon }) {
         <h3>Status</h3>
         <div className="status-row">
           {isCaught ? `The pokemon is caught ` : `The pokemon is free `}
-          <CatchButton catchToggle={catchToggle} isCaught={isCaught} />
+          <CatchButton
+            catchToggle={catchToggle}
+            isCaught={isCaught}
+            dataTestId={`${selectedPokemon.name}-details-button`}
+          />
         </div>
       </div>
     </div>

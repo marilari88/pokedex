@@ -19,6 +19,7 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
   const { myPokemonArray } = useContext(MyPokemonContext);
 
   useEffect(() => {
+    let isSubscribed = true;
     setLoadingMessage("Loading...");
     getPokemonList()
       .then((pokemonArray) => {
@@ -47,10 +48,22 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
         }
       })
       .then((pokemonArray) => {
-        setPokemonList(pokemonArray);
-        setLoadingMessage("");
+        if (isSubscribed) {
+          setPokemonList(pokemonArray);
+          if (pokemonArray.length === 0) {
+            setLoadingMessage("Empty list");
+          } else {
+            setLoadingMessage("");
+          }
+        }
       })
-      .catch((err) => setLoadingMessage(`Error: ${err}`));
+      .catch((err) => {
+        if (isSubscribed) setLoadingMessage(`Error: ${err}`);
+      });
+    //set isSubscribed to false to prevent memory leak
+    return () => {
+      isSubscribed = false;
+    };
   }, [filterName, searchText, myPokemonArray]);
 
   return (
@@ -60,7 +73,7 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
         <SearchInput searchText={searchText} setSearchText={setSearchText} />
         <FilterButtons setFilterName={setFilterName} />
       </div>
-      {pokemonList.length === 0 ? (
+      {loadingMessage !== "" ? (
         <div className="list-message">{loadingMessage}</div>
       ) : (
         <>

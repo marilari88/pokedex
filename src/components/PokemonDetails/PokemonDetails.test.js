@@ -1,8 +1,29 @@
-import { render, screen } from "@testing-library/react";
+import {
+  findByText,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import PokemonDetails from "./PokemonDetails";
-import axios from "axios";
 
-jest.mock("axios");
+const selectedPokemon = {
+  name: "ivysaur",
+  url: "https://pokeapi.co/api/v2/pokemon/2/",
+};
+
+const inexistentPokemon = {
+  name: "fakepokemon",
+  url: "https://pokeapi.co/api/v2/pokemon/10000/",
+};
+
+describe("Loading a inexistent pokemon", () => {
+  it("Show error message if inexistent pokemon", async () => {
+    const { findByText } = render(
+      <PokemonDetails selectedPokemon={inexistentPokemon} />
+    );
+    expect(await findByText(/error/i)).toBeInTheDocument();
+  });
+});
 
 describe("Render pokemon details", () => {
   it("Show no pokemon selected", () => {
@@ -10,30 +31,31 @@ describe("Render pokemon details", () => {
     expect(screen.getByText(/no pokemon selected/i)).toBeInTheDocument();
   });
 
-  it("Show mocked pokemon", async () => {
-    const mockedPokemon = {
-      data: {
-        abilities: [
-          { ability: { name: "overgrow" } },
-          { ability: { name: "chlorophyll" } },
-        ],
-        id: 2,
-        name: "ivysaur",
-        height: 10,
-        weight: 130,
-        sprites: {
-          front_default:
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
-        },
-        types: [{ type: { name: "grass" } }, { type: { name: "poison" } }],
-      },
-    };
-
-    axios.get.mockImplementation(() => Promise.resolve(mockedPokemon));
-
-    const { findByText } = render(
-      <PokemonDetails selectedPokemon={{ name: "ivisaur", url: "fakeurl" }} />
+  it("Loading message when trying to laod a pokemon", async () => {
+    const { getByText } = render(
+      <PokemonDetails selectedPokemon={selectedPokemon} />
     );
-    expect(await findByText(/ivysaur/)).toBeInTheDocument();
+    await waitForElementToBeRemoved(() => getByText(/loading/i));
+  });
+
+  it("Show ivisaur name", async () => {
+    const { findByText } = render(
+      <PokemonDetails selectedPokemon={selectedPokemon} />
+    );
+    expect(await findByText(/ivysaur/i)).toBeInTheDocument();
+  });
+
+  it("Show ivisaur code", async () => {
+    const { findByText } = render(
+      <PokemonDetails selectedPokemon={selectedPokemon} />
+    );
+    expect(await findByText(/#002/)).toBeInTheDocument();
+  });
+
+  it("Pokemon name has to be Capitalized", async () => {
+    const { findByText } = render(
+      <PokemonDetails selectedPokemon={selectedPokemon} />
+    );
+    expect(await findByText(/Ivysaur/)).toBeInTheDocument();
   });
 });

@@ -28,7 +28,11 @@ function PokemonListItem({ pokemon }) {
     <div className="listitem">
       <div className="listitem-pokemon-name">{capitalize(pokemon.name)}</div>
       <div className="listitem-button">
-        <CatchButton catchToggle={catchToggle} isCaught={isCaught} />
+        <CatchButton
+          catchToggle={catchToggle}
+          isCaught={isCaught}
+          dataTestId={`${pokemon.name}-li-button`}
+        />
       </div>
     </div>
   );

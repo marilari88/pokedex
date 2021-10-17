@@ -8,7 +8,7 @@ describe("Test initial Rendering", () => {
     expect(screen.getByPlaceholderText(/search/i)).toHaveValue("");
   });
 
-  it("render with text", () => {
+  it("Render with text", () => {
     render(<SearchInput searchText="bulbasaur" />);
     expect(screen.getByPlaceholderText(/search/i)).toHaveValue("bulbasaur");
   });
