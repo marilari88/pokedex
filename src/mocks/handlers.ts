@@ -1,4 +1,6 @@
 import { rest } from "msw";
+import { PokemonDetails } from "../interfaces/pokemonDetails";
+import { PokemonListResponse } from "../interfaces/pokemonItem";
 
 const pokemonListResponse = {
   results: [
@@ -35,7 +37,7 @@ const pokemonListResponse = {
       url: "https://pokeapi.co/api/v2/pokemon/8/",
     },
   ],
-};
+} as PokemonListResponse;
 
 const pokemonDetailsResponse = {
   abilities: [
@@ -55,7 +57,7 @@ const pokemonDetailsResponse = {
     },
   },
   types: [{ type: { name: "grass" } }, { type: { name: "poison" } }],
-};
+} as PokemonDetails;
 
 export const handlers = [
   rest.get("https://pokeapi.co/api/v2/pokemon/2", (req, res, ctx) => {
