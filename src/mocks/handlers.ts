@@ -2,7 +2,7 @@ import { rest } from "msw";
 import { PokemonDetails } from "../interfaces/pokemonDetails";
 import { PokemonListResponse } from "../interfaces/pokemonItem";
 
-const pokemonListResponse = {
+const pokemonListResponse: PokemonListResponse = {
   results: [
     {
       name: "bulbasaur",
@@ -37,9 +37,9 @@ const pokemonListResponse = {
       url: "https://pokeapi.co/api/v2/pokemon/8/",
     },
   ],
-} as PokemonListResponse;
+};
 
-const pokemonDetailsResponse = {
+const pokemonDetailsResponse: PokemonDetails = {
   abilities: [
     { ability: { name: "overgrow" } },
     { ability: { name: "chlorophyll" } },
@@ -57,7 +57,7 @@ const pokemonDetailsResponse = {
     },
   },
   types: [{ type: { name: "grass" } }, { type: { name: "poison" } }],
-} as PokemonDetails;
+};
 
 export const handlers = [
   rest.get("https://pokeapi.co/api/v2/pokemon/2", (req, res, ctx) => {
