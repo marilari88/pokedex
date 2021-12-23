@@ -1,6 +1,8 @@
 import { rest } from "msw";
+import { PokemonDetails } from "../interfaces/pokemonDetails";
+import { PokemonListResponse } from "../interfaces/pokemonItem";
 
-const pokemonListResponse = {
+const pokemonListResponse: PokemonListResponse = {
   results: [
     {
       name: "bulbasaur",
@@ -37,7 +39,7 @@ const pokemonListResponse = {
   ],
 };
 
-const pokemonDetailsResponse = {
+const pokemonDetailsResponse: PokemonDetails = {
   abilities: [
     { ability: { name: "overgrow" } },
     { ability: { name: "chlorophyll" } },
