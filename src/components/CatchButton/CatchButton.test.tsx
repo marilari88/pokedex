@@ -3,13 +3,14 @@ import userEvent from "@testing-library/user-event";
 import CatchButton from "./CatchButton";
 
 describe("Testing initial rendering", () => {
+    const toggleCatchMock = jest.fn();
   it("Show 'Free it' if pokemon is caught", () => {
-    const { getByRole } = render(<CatchButton isCaught={true} />);
+    const { getByRole } = render(<CatchButton isCaught={true} catchToggle={toggleCatchMock}/>);
     expect(getByRole("button")).toHaveTextContent(/free it/i);
   });
 
   it("Show 'Caught it' if pokemon is free", () => {
-    const { getByRole } = render(<CatchButton isCaught={false} />);
+    const { getByRole } = render(<CatchButton isCaught={false} catchToggle={toggleCatchMock}/>);
     expect(getByRole("button")).toHaveTextContent(/catch it/i);
   });
 });
