@@ -1,11 +1,17 @@
-import React from "react";
 import PropTypes from "prop-types";
+import { FormEvent } from "react";
 import "./SearchInput.css";
 
-function SearchInput({ searchText, setSearchText }) {
-  const handleChange = ({ target }) => {
-    setSearchText(target.value);
+type SearchInputProps = {
+  searchText: string;
+  setSearchText: (value: string) => void;
+};
+
+function SearchInput({ searchText, setSearchText }: SearchInputProps) {
+  const handleChange = ({ currentTarget }: FormEvent<HTMLInputElement>) => {
+    setSearchText(currentTarget.value);
   };
+
   return (
     <div className="search-container">
       <input
