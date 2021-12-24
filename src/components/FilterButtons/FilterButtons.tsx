@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import "./FilterButtons.css";
 
-function FilterButtons({ setFilterName }) {
-  const [selectedButton, setSelectedButton] = useState("Show all");
-  const handleClick = ({ target }) => {
-    setSelectedButton(target.textContent);
-    setFilterName(target.textContent);
+type FilterButtonsProps = { setFilterName: (value: string) => void };
+
+function FilterButtons({ setFilterName }: FilterButtonsProps): JSX.Element {
+  const [selectedButton, setSelectedButton] = useState<string>("Show all");
+
+  const handleClick = ({
+    currentTarget,
+  }: React.MouseEvent<HTMLButtonElement>): void => {
+    setSelectedButton(currentTarget.textContent!);
+    setFilterName(currentTarget.textContent!);
   };
 
   return (
@@ -34,7 +38,3 @@ function FilterButtons({ setFilterName }) {
 }
 
 export default FilterButtons;
-
-FilterButtons.propTypes = {
-  setFilterName: PropTypes.func,
-};
