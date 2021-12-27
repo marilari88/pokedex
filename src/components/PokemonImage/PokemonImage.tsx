@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PokeballLoading from "../../assets/pokeball.gif";
-import PropTypes from "prop-types";
 import "./PokemonImage.css";
 
-function PokemonImage({ pokemonImageUrl, pokemonName }) {
+type PokemonImageProps = {
+  pokemonImageUrl?: string;
+  pokemonName: string;
+};
+
+function PokemonImage({
+  pokemonImageUrl,
+  pokemonName,
+}: PokemonImageProps): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [showImage, setShowImage] = useState(false);
 
@@ -36,8 +43,3 @@ function PokemonImage({ pokemonImageUrl, pokemonName }) {
 }
 
 export default PokemonImage;
-
-PokemonImage.propTypes = {
-  pokemonImageUrl: PropTypes.string.isRequired,
-  pokemonName: PropTypes.string,
-};
