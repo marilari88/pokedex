@@ -6,11 +6,7 @@ type CatchButtonProps = {
   dataTestId?: string;
 };
 
-function CatchButton({
-  isCaught,
-  catchToggle,
-  dataTestId,
-}: CatchButtonProps): JSX.Element {
+function CatchButton({ isCaught, catchToggle, dataTestId }: CatchButtonProps) {
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     catchToggle();
