@@ -1,8 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-function CatchButton({ isCaught, catchToggle, dataTestId }) {
-  const handleClick = (e) => {
+type CatchButtonProps = {
+  isCaught: boolean;
+  catchToggle: Function;
+  dataTestId?: string;
+};
+
+function CatchButton({ isCaught, catchToggle, dataTestId }: CatchButtonProps) {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     catchToggle();
   };
@@ -19,9 +24,3 @@ function CatchButton({ isCaught, catchToggle, dataTestId }) {
 }
 
 export default CatchButton;
-
-CatchButton.propTypes = {
-  isCaught: PropTypes.bool,
-  catchToggle: PropTypes.func,
-  dataTestId: PropTypes.string,
-};
