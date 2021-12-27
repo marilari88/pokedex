@@ -3,14 +3,16 @@ import "./FilterButtons.css";
 
 type FilterButtonsProps = { setFilterName: (value: string) => void };
 
-function FilterButtons({ setFilterName }: FilterButtonsProps): JSX.Element {
+function FilterButtons({ setFilterName }: FilterButtonsProps) {
   const [selectedButton, setSelectedButton] = useState<string>("Show all");
 
   const handleClick = ({
     currentTarget,
-  }: React.MouseEvent<HTMLButtonElement>): void => {
-    setSelectedButton(currentTarget.textContent!);
-    setFilterName(currentTarget.textContent!);
+  }: React.MouseEvent<HTMLButtonElement>) => {
+    if (currentTarget.textContent) {
+      setSelectedButton(currentTarget.textContent);
+      setFilterName(currentTarget.textContent);
+    }
   };
 
   return (
