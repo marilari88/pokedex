@@ -3,13 +3,18 @@ import userEvent from "@testing-library/user-event";
 import FilterButtons from "./FilterButtons";
 
 describe("Testing initial rendering", () => {
+  const setFilterNameMock = jest.fn();
   it("'Show all' button selected by default", () => {
-    const { getByText } = render(<FilterButtons />);
+    const { getByText } = render(
+      <FilterButtons setFilterName={setFilterNameMock} />
+    );
     expect(getByText(/show all/i)).toHaveClass("selected-button");
   });
 
   it("Other buttons are not selected", () => {
-    const { getByText } = render(<FilterButtons />);
+    const { getByText } = render(
+      <FilterButtons setFilterName={setFilterNameMock} />
+    );
     expect(getByText(/show caught/i)).not.toHaveClass("selected-button");
     expect(getByText(/show free/i)).not.toHaveClass("selected-button");
   });
