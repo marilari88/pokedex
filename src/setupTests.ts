@@ -11,7 +11,7 @@ beforeAll(() => {
   server.listen();
 });
 
-afterEach(() => {
+afterEach((): string => {
   server.resetHandlers();
 });
 
