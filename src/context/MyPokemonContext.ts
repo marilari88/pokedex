@@ -1,9 +1,8 @@
 import { createContext } from "react";
-import { PokemonItem } from "../interfaces/pokemonItem";
 
 type MyPokemonContextType = {
-  myPokemonArray: Array<PokemonItem>;
-  setMyPokemonArray: () => void;
+  myPokemonArray: string[];
+  setMyPokemonArray: (obj: { type: string; payload: string }) => void;
 };
 
 const MyPokemonContext = createContext<MyPokemonContextType>({
