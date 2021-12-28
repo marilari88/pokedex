@@ -1,15 +1,19 @@
-import React, { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import CatchButton from "../CatchButton/CatchButton";
 import MyPokemonContext from "../../context/MyPokemonContext";
-import PropTypes from "prop-types";
 
 import { capitalize } from "../../utils/string";
 
 import "./PokemonListItem.css";
+import { PokemonItem } from "../../interfaces/pokemonItem";
 
-function PokemonListItem({ pokemon }) {
+type PokemonListItemProps = {
+  pokemon: PokemonItem;
+};
+
+function PokemonListItem({ pokemon }: PokemonListItemProps) {
   const { myPokemonArray, setMyPokemonArray } = useContext(MyPokemonContext);
-  const [isCaught, setIsCaught] = useState(null);
+  const [isCaught, setIsCaught] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (myPokemonArray) setIsCaught(myPokemonArray.includes(pokemon.name));
@@ -28,18 +32,18 @@ function PokemonListItem({ pokemon }) {
     <div className="listitem">
       <div className="listitem-pokemon-name">{capitalize(pokemon.name)}</div>
       <div className="listitem-button">
-        <CatchButton
-          catchToggle={catchToggle}
-          isCaught={isCaught}
-          dataTestId={`${pokemon.name}-li-button`}
-        />
+        {isCaught !== null ? (
+          <CatchButton
+            catchToggle={catchToggle}
+            isCaught={isCaught}
+            dataTestId={`${pokemon.name}-li-button`}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
 }
 
 export default PokemonListItem;
-
-PokemonListItem.propTypes = {
-  pokemon: PropTypes.object.isRequired,
-};
