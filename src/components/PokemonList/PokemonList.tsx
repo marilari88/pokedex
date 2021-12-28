@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import PropTypes from "prop-types";
+import { useState, useEffect, useContext } from "react";
 import PokemonListItem from "../PokemonListItem/PokemonListItem";
 import FilterButtons from "../FilterButtons/FilterButtons";
 import SearchInput from "../SearchInput/SearchInput";
@@ -9,11 +8,17 @@ import MyPokemonContext from "../../context/MyPokemonContext";
 
 import "./PokemonList.css";
 import PokemonLogo from "../../assets/pokemon_logo.svg";
+import { PokemonItem } from "../../interfaces/pokemonItem";
 
-function PokemonList({ selectedPokemon, setSelectedPokemon }) {
-  const [pokemonList, setPokemonList] = useState([]);
-  const [loadingMessage, setLoadingMessage] = useState("Loading...");
-  const [filterName, setFilterName] = useState(null);
+type PokemonListType = {
+  selectedPokemon: PokemonItem | null;
+  setSelectedPokemon: (pokemonItem: PokemonItem) => void;
+};
+
+function PokemonList({ selectedPokemon, setSelectedPokemon }: PokemonListType) {
+  const [pokemonList, setPokemonList] = useState<PokemonItem[]>([]);
+  const [loadingMessage, setLoadingMessage] = useState("");
+  const [filterName, setFilterName] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
 
   const { myPokemonArray } = useContext(MyPokemonContext);
@@ -82,8 +87,7 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
               return (
                 <li
                   className={`${
-                    selectedPokemon !== null &&
-                    selectedPokemon.name === pokemon.name
+                    selectedPokemon && selectedPokemon.name === pokemon.name
                       ? `pokemon-selected`
                       : ""
                   } pokemon-item`}
@@ -105,8 +109,3 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }) {
 }
 
 export default PokemonList;
-
-PokemonList.propTypes = {
-  selectedPokemon: PropTypes.object,
-  setSelectedPokemon: PropTypes.func,
-};

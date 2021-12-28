@@ -32,6 +32,7 @@ describe("Testing get request", () => {
   it("Select a pokemon of the list", async () => {
     const selectedPokemonMock = {
       name: "ivysaur",
+      url: "https://fakeurl.com/ivysaur",
     };
     const setSelectedPokemonMock = jest.fn();
     const { findByTestId } = render(
