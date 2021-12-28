@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import PokemonList from "./PokemonList.js";
+import PokemonList from "./PokemonList";
 
 describe("Loading simulation", () => {
   it("Show Loading message while fetching data", async () => {
