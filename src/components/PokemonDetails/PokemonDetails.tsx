@@ -9,7 +9,7 @@ import { PokemonItem } from "../../interfaces/pokemonItem";
 import { PokemonDetails as PokemonDetailsType } from "../../interfaces/pokemonDetails";
 
 type PokemonDetailsProps = {
-  selectedPokemon?: PokemonItem;
+  selectedPokemon: PokemonItem | null;
 };
 
 function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
