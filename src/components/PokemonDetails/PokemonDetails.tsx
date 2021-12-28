@@ -1,18 +1,24 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./PokemonDetails.css";
 import axios from "axios";
 import CatchButton from "../CatchButton/CatchButton";
 import PokemonImage from "../PokemonImage/PokemonImage";
 import MyPokemonContext from "../../context/MyPokemonContext";
-import PropTypes from "prop-types";
 import { capitalize, leftPad } from "../../utils/string";
+import { PokemonItem } from "../../interfaces/pokemonItem";
+import { PokemonDetails as PokemonDetailsType } from "../../interfaces/pokemonDetails";
 
-function PokemonDetails({ selectedPokemon }) {
-  const [pokemonData, setPokemonData] = useState({});
-  const [loadingMessage, setLoadingMessage] = useState("Loading...");
+type PokemonDetailsProps = {
+  selectedPokemon?: PokemonItem;
+};
 
+function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
+  const [pokemonData, setPokemonData] = useState<PokemonDetailsType | null>(
+    null
+  );
+  const [loadingMessage, setLoadingMessage] = useState<string | null>();
   const { myPokemonArray, setMyPokemonArray } = useContext(MyPokemonContext);
-  const [isCaught, setIsCaught] = useState(null);
+  const [isCaught, setIsCaught] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (myPokemonArray && selectedPokemon)
@@ -20,6 +26,7 @@ function PokemonDetails({ selectedPokemon }) {
   }, [selectedPokemon, myPokemonArray]);
 
   const catchToggle = () => {
+    if (!selectedPokemon) return;
     if (!isCaught) {
       setMyPokemonArray({ type: "add", payload: selectedPokemon.name });
     } else {
@@ -32,7 +39,7 @@ function PokemonDetails({ selectedPokemon }) {
     const source = axios.CancelToken.source();
     let isSubscribed = true;
     // fetching pokemon details from api
-    const getPokemenDetails = async (url) => {
+    const getPokemenDetails = async (url: string) => {
       try {
         setLoadingMessage("Loading...");
         const result = await axios.get(url, {
@@ -57,18 +64,18 @@ function PokemonDetails({ selectedPokemon }) {
     };
   }, [selectedPokemon]);
 
-  if (!selectedPokemon) {
-    return (
-      <div className="pokemon-container">
-        <div className="message">No pokemon selected</div>
-      </div>
-    );
-  }
-
   if (loadingMessage) {
     return (
       <div className="pokemon-container">
         <div className="message">{loadingMessage}</div>
+      </div>
+    );
+  }
+
+  if (!pokemonData) {
+    return (
+      <div className="pokemon-container">
+        <div className="message">No pokemon selected</div>
       </div>
     );
   }
@@ -106,11 +113,15 @@ function PokemonDetails({ selectedPokemon }) {
         <h3>Status</h3>
         <div className="status-row">
           {isCaught ? `The pokemon is caught ` : `The pokemon is free `}
-          <CatchButton
-            catchToggle={catchToggle}
-            isCaught={isCaught}
-            dataTestId={`${selectedPokemon.name}-details-button`}
-          />
+          {isCaught !== null ? (
+            <CatchButton
+              catchToggle={catchToggle}
+              isCaught={isCaught}
+              dataTestId={`${pokemonData.name}-details-button`}
+            />
+          ) : (
+            "Cannot retrieve pokemon status"
+          )}
         </div>
       </div>
     </div>
@@ -118,7 +129,3 @@ function PokemonDetails({ selectedPokemon }) {
 }
 
 export default PokemonDetails;
-
-PokemonDetails.propTypes = {
-  selectedPokemon: PropTypes.object,
-};
