@@ -21,7 +21,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "types": "tsc --noEmit",                                          
+       "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx ."
   },
   "eslintConfig": {
     "extends": [

@@ -9,3 +9,7 @@ jobs:
         run: yarn
       - name: Run tests
         run: yarn test
+      - name: Check Types with TSC
+        run: yarn types
+      - name: Run eslint
+        run: yarn lint
