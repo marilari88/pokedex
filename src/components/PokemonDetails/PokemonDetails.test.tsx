@@ -26,7 +26,7 @@ describe("Loading a inexistent pokemon", () => {
 
 describe("Render pokemon details", () => {
   it("Show no pokemon selected", () => {
-    render(<PokemonDetails />);
+    render(<PokemonDetails selectedPokemon={null} />);
     expect(screen.getByText(/no pokemon selected/i)).toBeInTheDocument();
   });
 
