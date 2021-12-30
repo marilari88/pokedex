@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { MyPokemonProvider } from "../../context/MyPokemonContext";
 import PokemonList from "./PokemonList";
 
 describe("Loading simulation", () => {
@@ -8,7 +9,8 @@ describe("Loading simulation", () => {
       <PokemonList
         selectedPokemon={null}
         setSelectedPokemon={setSelectedPokemonMock}
-      />
+      />,
+      { wrapper: MyPokemonProvider }
     );
     expect(await screen.findByText(/loading/i)).toBeInTheDocument();
   });
@@ -21,7 +23,8 @@ describe("Testing get request", () => {
       <PokemonList
         selectedPokemon={null}
         setSelectedPokemon={setSelectedPokemonMock}
-      />
+      />,
+      { wrapper: MyPokemonProvider }
     );
     expect(await findByText(/ivysaur/i)).toBeInTheDocument();
     expect(await findByText(/bulbasaur/i)).toBeInTheDocument();
@@ -39,7 +42,8 @@ describe("Testing get request", () => {
       <PokemonList
         selectedPokemon={selectedPokemonMock}
         setSelectedPokemon={setSelectedPokemonMock}
-      />
+      />,
+      { wrapper: MyPokemonProvider }
     );
     expect(await findByTestId("li-ivysaur")).toHaveClass("pokemon-selected");
   });
