@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import PokemonListItem from "../PokemonListItem/PokemonListItem";
 import FilterButtons from "../FilterButtons/FilterButtons";
 import SearchInput from "../SearchInput/SearchInput";
 import { getPokemonList } from "../../services/pokemonListService";
 import { escapeRegularExpression as escapeRegExp } from "../../utils/regularexpression";
-import MyPokemonContext from "../../context/MyPokemonContext";
+import { useMyPokemon } from "../../context/MyPokemonContext";
 
 import "./PokemonList.css";
 import PokemonLogo from "../../assets/pokemon_logo.svg";
@@ -21,7 +21,7 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }: PokemonListType) {
   const [filterName, setFilterName] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
 
-  const { myPokemonArray } = useContext(MyPokemonContext);
+  const { myPokemonArray } = useMyPokemon();
 
   useEffect(() => {
     let isSubscribed = true;

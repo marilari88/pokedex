@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import "./PokemonDetails.css";
 import axios from "axios";
 import CatchButton from "../CatchButton/CatchButton";
 import PokemonImage from "../PokemonImage/PokemonImage";
-import MyPokemonContext from "../../context/MyPokemonContext";
+import { useMyPokemon } from "../../context/MyPokemonContext";
 import { capitalize, leftPad } from "../../utils/string";
 import { PokemonItem } from "../../interfaces/pokemonItem";
 import { PokemonDetails as PokemonDetailsType } from "../../interfaces/pokemonDetails";
@@ -17,7 +17,7 @@ function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
     null
   );
   const [loadingMessage, setLoadingMessage] = useState<string | null>();
-  const { myPokemonArray, setMyPokemonArray } = useContext(MyPokemonContext);
+  const { myPokemonArray, setMyPokemonArray } = useMyPokemon();
   const [isCaught, setIsCaught] = useState<boolean | null>(null);
 
   useEffect(() => {
