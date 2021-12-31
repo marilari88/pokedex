@@ -1,9 +1,5 @@
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
-import { MyPokemonProvider } from "../../context/MyPokemonContext";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { renderWithProviders } from "../../utils/renderWithProviders";
 import PokemonDetails from "./PokemonDetails";
 
 const selectedPokemon = {
@@ -18,9 +14,8 @@ const inexistentPokemon = {
 
 describe("Loading a inexistent pokemon", () => {
   it("Show error message if inexistent pokemon", async () => {
-    const { findByText } = render(
-      <PokemonDetails selectedPokemon={inexistentPokemon} />,
-      { wrapper: MyPokemonProvider }
+    const { findByText } = renderWithProviders(
+      <PokemonDetails selectedPokemon={inexistentPokemon} />
     );
     expect(await findByText(/error/i)).toBeInTheDocument();
   });
@@ -28,40 +23,34 @@ describe("Loading a inexistent pokemon", () => {
 
 describe("Render pokemon details", () => {
   it("Show no pokemon selected", () => {
-    render(<PokemonDetails selectedPokemon={null} />, {
-      wrapper: MyPokemonProvider,
-    });
+    renderWithProviders(<PokemonDetails selectedPokemon={null} />, {});
     expect(screen.getByText(/no pokemon selected/i)).toBeInTheDocument();
   });
 
   it("Loading message when trying to laod a pokemon", async () => {
-    const { getByText } = render(
-      <PokemonDetails selectedPokemon={selectedPokemon} />,
-      { wrapper: MyPokemonProvider }
+    const { getByText } = renderWithProviders(
+      <PokemonDetails selectedPokemon={selectedPokemon} />
     );
     await waitForElementToBeRemoved(() => getByText(/loading/i));
   });
 
   it("Show ivisaur name", async () => {
-    const { findByText } = render(
-      <PokemonDetails selectedPokemon={selectedPokemon} />,
-      { wrapper: MyPokemonProvider }
+    const { findByText } = renderWithProviders(
+      <PokemonDetails selectedPokemon={selectedPokemon} />
     );
     expect(await findByText(/ivysaur/i)).toBeInTheDocument();
   });
 
   it("Show ivisaur code", async () => {
-    const { findByText } = render(
-      <PokemonDetails selectedPokemon={selectedPokemon} />,
-      { wrapper: MyPokemonProvider }
+    const { findByText } = renderWithProviders(
+      <PokemonDetails selectedPokemon={selectedPokemon} />
     );
     expect(await findByText(/#002/)).toBeInTheDocument();
   });
 
   it("Pokemon name has to be Capitalized", async () => {
-    const { findByText } = render(
-      <PokemonDetails selectedPokemon={selectedPokemon} />,
-      { wrapper: MyPokemonProvider }
+    const { findByText } = renderWithProviders(
+      <PokemonDetails selectedPokemon={selectedPokemon} />
     );
     expect(await findByText(/Ivysaur/)).toBeInTheDocument();
   });
