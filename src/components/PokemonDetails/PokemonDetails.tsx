@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import "./PokemonDetails.css";
-import axios from "axios";
 import CatchButton from "../CatchButton/CatchButton";
 import PokemonImage from "../PokemonImage/PokemonImage";
 import { useMyPokemon } from "../../context/MyPokemonContext";
 import { capitalize, leftPad } from "../../utils/string";
 import { PokemonItem } from "../../interfaces/pokemonItem";
 import { PokemonDetails as PokemonDetailsType } from "../../interfaces/pokemonDetails";
+import usePokemonDetails from "../../hooks/usePokemonDetails";
 
 type PokemonDetailsProps = {
   selectedPokemon: PokemonItem | null;
@@ -35,34 +35,17 @@ function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
     setIsCaught((prevState) => !prevState);
   };
 
-  useEffect(() => {
-    const source = axios.CancelToken.source();
-    let isSubscribed = true;
-    // fetching pokemon details from api
-    const getPokemenDetails = async (url: string) => {
-      try {
-        setLoadingMessage("Loading...");
-        const result = await axios.get(url, {
-          cancelToken: source.token,
-        });
-        if (isSubscribed) {
-          setPokemonData(result.data);
-          setLoadingMessage("");
-        }
-      } catch (err) {
-        if (isSubscribed)
-          setLoadingMessage(`Error! Cannot retrieve Pokemon Details:  ${err}`);
-      }
-    };
+  const { status, data, error } = usePokemonDetails(selectedPokemon);
 
-    if (selectedPokemon) {
-      getPokemenDetails(selectedPokemon.url);
+  useEffect(() => {
+    try {
+      setLoadingMessage(status === "loading" ? "Loading..." : null);
+      if (error) throw new Error(error.message);
+      if (data) setPokemonData(data);
+    } catch (err) {
+      setLoadingMessage(`Error! Cannot retrieve Pokemon Details:  ${err}`);
     }
-    return () => {
-      isSubscribed = false;
-      source.cancel();
-    };
-  }, [selectedPokemon]);
+  }, [selectedPokemon, data, status, error]);
 
   if (loadingMessage) {
     return (

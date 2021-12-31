@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import PokemonListItem from "../PokemonListItem/PokemonListItem";
 import FilterButtons from "../FilterButtons/FilterButtons";
 import SearchInput from "../SearchInput/SearchInput";
-import { getPokemonList } from "../../services/pokemonListService";
 import { escapeRegularExpression as escapeRegExp } from "../../utils/regularexpression";
 import { useMyPokemon } from "../../context/MyPokemonContext";
 
 import "./PokemonList.css";
 import PokemonLogo from "../../assets/pokemon_logo.svg";
 import { PokemonItem } from "../../interfaces/pokemonItem";
+import usePokemonList from "../../hooks/usePokemonList";
 
 type PokemonListType = {
   selectedPokemon: PokemonItem | null;
@@ -22,54 +22,60 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }: PokemonListType) {
   const [searchText, setSearchText] = useState("");
 
   const { myPokemonArray } = useMyPokemon();
+  const { status, data, error } = usePokemonList();
 
   useEffect(() => {
-    let isSubscribed = true;
-    setLoadingMessage("Loading...");
-    getPokemonList()
-      .then((pokemonArray) => {
-        // Apply filter based on Selected button
-        if (filterName === "Show Caught") {
-          return pokemonArray.filter((pokemon) =>
-            myPokemonArray.includes(pokemon.name)
-          );
-        } else if (filterName === "Show Free") {
-          return pokemonArray.filter(
-            (pokemon) => !myPokemonArray.includes(pokemon.name)
-          );
+    function filterByStatus(
+      pokemonArray: PokemonItem[],
+      myPokemonArray: string[],
+      filterStatus: string | null
+    ): PokemonItem[] {
+      if (filterStatus === "Show Caught") {
+        return pokemonArray.filter((pokemon) =>
+          myPokemonArray.includes(pokemon.name)
+        );
+      } else if (filterStatus === "Show Free") {
+        return pokemonArray.filter(
+          (pokemon) => !myPokemonArray.includes(pokemon.name)
+        );
+      } else {
+        return pokemonArray;
+      }
+    }
+
+    function filterByText(
+      pokemonArray: PokemonItem[],
+      filterText: string
+    ): PokemonItem[] {
+      if (filterText) {
+        const searchRegExp = new RegExp(escapeRegExp(searchText), "i");
+        return pokemonArray.filter((pokemon) =>
+          searchRegExp.test(pokemon.name)
+        );
+      } else {
+        return pokemonArray;
+      }
+    }
+
+    if (status === "loading") setLoadingMessage("Loading...");
+
+    if (error) setLoadingMessage(error.message);
+
+    if (data) {
+      try {
+        let pokemonArray = filterByStatus(data, myPokemonArray, filterName);
+        let filteredPokemonArray = filterByText(pokemonArray, searchText);
+        setPokemonList(filteredPokemonArray);
+        if (filteredPokemonArray.length === 0) {
+          setLoadingMessage("Empty list");
         } else {
-          return pokemonArray;
+          setLoadingMessage("");
         }
-      })
-      .then((pokemonArray) => {
-        // Apply filter by search text
-        if (searchText) {
-          const searchRegExp = new RegExp(escapeRegExp(searchText), "i");
-          return pokemonArray.filter((pokemon) =>
-            searchRegExp.test(pokemon.name)
-          );
-        } else {
-          return pokemonArray;
-        }
-      })
-      .then((pokemonArray) => {
-        if (isSubscribed) {
-          setPokemonList(pokemonArray);
-          if (pokemonArray.length === 0) {
-            setLoadingMessage("Empty list");
-          } else {
-            setLoadingMessage("");
-          }
-        }
-      })
-      .catch((err) => {
-        if (isSubscribed) setLoadingMessage(`Error: ${err}`);
-      });
-    //set isSubscribed to false to prevent memory leak
-    return () => {
-      isSubscribed = false;
-    };
-  }, [filterName, searchText, myPokemonArray]);
+      } catch (err) {
+        setLoadingMessage(`Error: ${err}`);
+      }
+    }
+  }, [filterName, searchText, myPokemonArray, status, data, error]);
 
   return (
     <div className="sidebar">
