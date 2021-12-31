@@ -4,6 +4,8 @@ import PokemonDetails from "./components/PokemonDetails/PokemonDetails";
 import "./App.css";
 import { PokemonItem } from "./interfaces/pokemonItem";
 import { MyPokemonProvider } from "./context/MyPokemonContext";
+import { QueriesProvider } from "./providers/QueriesProvider";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 function App() {
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonItem | null>(
@@ -16,13 +18,16 @@ function App() {
         <h1>Pokedex</h1>
       </header>
       <main>
-        <MyPokemonProvider>
-          <PokemonList
-            selectedPokemon={selectedPokemon}
-            setSelectedPokemon={setSelectedPokemon}
-          />
-          <PokemonDetails selectedPokemon={selectedPokemon} />
-        </MyPokemonProvider>
+        <QueriesProvider>
+          <MyPokemonProvider>
+            <PokemonList
+              selectedPokemon={selectedPokemon}
+              setSelectedPokemon={setSelectedPokemon}
+            />
+            <PokemonDetails selectedPokemon={selectedPokemon} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </MyPokemonProvider>
+        </QueriesProvider>
       </main>
       <footer>
         <div className="signature">
