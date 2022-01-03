@@ -1,0 +1,15 @@
+name: pr-check
+on: [push]
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn
+      - name: Run tests
+        run: yarn test
+      - name: Check Types with TSC
+        run: yarn types
+      - name: Run eslint
+        run: yarn lint

@@ -1,4 +1,5 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/de2e7172-1843-4a07-8237-497b4c5be564/deploy-status)](https://app.netlify.com/sites/pokedex-translated/deploys)
+![CI Check](https://github.com/marilari88/actions/workflows/test-runner/badge.svg)
 
 # Pokedex
 
@@ -13,10 +14,9 @@ This project is an exercise for job applying purpose. The exercise aim is to mak
 
 - Search the name of a pokemon by an input text
 
-
 ## API
 
-https://pokeapi.co/ 
+https://pokeapi.co/
 
 ## Available Scripts
 
