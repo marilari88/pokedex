@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import PokemonList from "./PokemonList.js";
+import PokemonList from "./PokemonList";
 
 describe("Loading simulation", () => {
   it("Show Loading message while fetching data", async () => {
@@ -32,6 +32,7 @@ describe("Testing get request", () => {
   it("Select a pokemon of the list", async () => {
     const selectedPokemonMock = {
       name: "ivysaur",
+      url: "https://fakeurl.com/ivysaur",
     };
     const setSelectedPokemonMock = jest.fn();
     const { findByTestId } = render(

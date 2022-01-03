@@ -41,11 +41,11 @@ function App() {
           <h1>Pokedex</h1>
         </header>
         <main>
+          <PokemonDetails selectedPokemon={selectedPokemon} />
           <PokemonList
             selectedPokemon={selectedPokemon}
             setSelectedPokemon={setSelectedPokemon}
           />
-          <PokemonDetails selectedPokemon={selectedPokemon} />
         </main>
         <footer>
           <div className="signature">
