@@ -1,6 +1,6 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CatchButton from "../CatchButton/CatchButton";
-import MyPokemonContext from "../../context/MyPokemonContext";
+import { useMyPokemon } from "../../context/MyPokemonContext";
 
 import { capitalize } from "../../utils/string";
 
@@ -12,7 +12,7 @@ type PokemonListItemProps = {
 };
 
 function PokemonListItem({ pokemon }: PokemonListItemProps) {
-  const { myPokemonArray, setMyPokemonArray } = useContext(MyPokemonContext);
+  const { myPokemonArray, setMyPokemonArray } = useMyPokemon();
   const [isCaught, setIsCaught] = useState<boolean | null>(null);
 
   useEffect(() => {
