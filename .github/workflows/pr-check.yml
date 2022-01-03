@@ -1,4 +1,4 @@
-name: tests-run-on-push
+name: pr-check
 on: [push]
 jobs:
   run-tests:
