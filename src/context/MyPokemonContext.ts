@@ -1,8 +1,13 @@
 import { createContext } from "react";
 
+export type ActionType = {
+  type: "add" | "remove";
+  payload: string;
+};
+
 type MyPokemonContextType = {
   myPokemonArray: string[];
-  setMyPokemonArray: (obj: { type: string; payload: string }) => void;
+  setMyPokemonArray: (action: ActionType) => void;
 };
 
 const MyPokemonContext = createContext<MyPokemonContextType>({

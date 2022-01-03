@@ -1,17 +1,20 @@
-import React, { useState, useReducer } from "react";
+import { useState, useReducer } from "react";
 import PokemonList from "./components/PokemonList/PokemonList";
 import PokemonDetails from "./components/PokemonDetails/PokemonDetails";
 import {
   getPokemonCaughtArray,
   savePokemonCaughtArray,
 } from "./services/catchService";
-import MyPokemonContext from "./context/MyPokemonContext";
+import MyPokemonContext, { ActionType } from "./context/MyPokemonContext";
 import "./App.css";
+import { PokemonItem } from "./interfaces/pokemonItem";
 
 function App() {
-  const [selectedPokemon, setSelectedPokemon] = useState(null);
+  const [selectedPokemon, setSelectedPokemon] = useState<PokemonItem | null>(
+    null
+  );
 
-  const reducer = (state, action) => {
+  const reducer = (state: string[], action: ActionType) => {
     let myNewPokemonArray;
     switch (action.type) {
       case "add":
