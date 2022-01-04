@@ -5,7 +5,6 @@ import PokemonImage from "../PokemonImage/PokemonImage";
 import { useMyPokemon } from "../../context/MyPokemonContext";
 import { capitalize, leftPad } from "../../utils/string";
 import { PokemonItem } from "../../interfaces/pokemonItem";
-import { PokemonDetails as PokemonDetailsType } from "../../interfaces/pokemonDetails";
 import usePokemonDetails from "../../hooks/usePokemonDetails";
 
 type PokemonDetailsProps = {
@@ -13,10 +12,6 @@ type PokemonDetailsProps = {
 };
 
 function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
-  const [pokemonData, setPokemonData] = useState<PokemonDetailsType | null>(
-    null
-  );
-  const [loadingMessage, setLoadingMessage] = useState<string | null>();
   const { myPokemonArray, setMyPokemonArray } = useMyPokemon();
   const [isCaught, setIsCaught] = useState<boolean | null>(null);
 
@@ -35,30 +30,41 @@ function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
     setIsCaught((prevState) => !prevState);
   };
 
-  const { status, data, error } = usePokemonDetails(selectedPokemon);
+  const {
+    status,
+    data: pokemonData,
+    error,
+  } = usePokemonDetails(selectedPokemon);
 
-  useEffect(() => {
-    try {
-      setLoadingMessage(status === "loading" ? "Loading..." : null);
-      if (error) throw new Error(error.message);
-      if (data) setPokemonData(data);
-    } catch (err) {
-      setLoadingMessage(`Error! Cannot retrieve Pokemon Details:  ${err}`);
-    }
-  }, [selectedPokemon, data, status, error]);
+  let loadingMessage: null | string;
+
+  switch (status) {
+    case "loading":
+      loadingMessage = "Loading...";
+      break;
+    case "error":
+      loadingMessage = `Error! ${error?.message}`;
+      break;
+    default:
+      loadingMessage = null;
+  }
 
   if (loadingMessage) {
     return (
-      <div className="pokemon-container">
-        <div className="message">{loadingMessage}</div>
+      <div className="pokemon-details">
+        <div className="pokemon-container">
+          <div className="message">{loadingMessage}</div>
+        </div>
       </div>
     );
   }
 
   if (!pokemonData) {
     return (
-      <div className="pokemon-container">
-        <div className="message">No pokemon selected</div>
+      <div className="pokemon-details">
+        <div className="pokemon-container">
+          <div className="message">No pokemon selected</div>
+        </div>
       </div>
     );
   }
