@@ -7,12 +7,9 @@ const usePokemonDetails = (pokemon: PokemonItem | null) => {
   return useQuery<PokemonDetails | undefined, Error>(
     ["pokemon-details", pokemon?.name],
     () => {
-      if (pokemon) {
-        const pokemonDetails = getPokemonDetails(pokemon.url);
-        return pokemonDetails;
-      }
+      if (pokemon) return getPokemonDetails(pokemon?.url);
     },
-    { enabled: !!pokemon }
+    { enabled: !!pokemon, retry: false }
   );
 };
 
