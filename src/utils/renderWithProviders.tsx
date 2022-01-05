@@ -1,13 +1,13 @@
 import { MyPokemonProvider } from "../context/MyPokemonContext";
-import { QueriesProvider } from "../providers/QueriesProvider";
+import { TestQueriesProvider } from "../providers/QueriesProvider";
 
 import { render, RenderOptions } from "@testing-library/react";
 
 const wrapper = ({ children }: { children?: React.ReactNode }) => {
   return (
-    <QueriesProvider>
+    <TestQueriesProvider>
       <MyPokemonProvider>{children}</MyPokemonProvider>
-    </QueriesProvider>
+    </TestQueriesProvider>
   );
 };
 
