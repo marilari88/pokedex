@@ -1,7 +1,7 @@
-import { render, waitForElementToBeRemoved } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
+import { renderWithProviders } from "./utils/renderWithProviders";
 
 describe("Application initial rendering", () => {
   it("Show application title", () => {
@@ -12,7 +12,7 @@ describe("Application initial rendering", () => {
 
 describe("Select a pokemon from the list", () => {
   it("Select ivysaur from the list", async () => {
-    const { findByText } = render(<App />);
+    const { findByText } = renderWithProviders(<App />);
     expect(await findByText(/ivysaur/i)).toBeInTheDocument();
     userEvent.click(await findByText(/ivysaur/i));
     expect(await findByText(/#002/)).toBeInTheDocument();
@@ -21,7 +21,7 @@ describe("Select a pokemon from the list", () => {
 
 describe("Click on 'Show Caught list'", () => {
   it("Show empty list message", async () => {
-    const { findByRole, findByText } = render(<App />);
+    const { findByRole, findByText } = renderWithProviders(<App />);
     userEvent.click(await findByRole("button", { name: /show caught/i }));
     expect(await findByText(/empty/i)).toBeInTheDocument();
   });
@@ -29,15 +29,15 @@ describe("Click on 'Show Caught list'", () => {
 
 describe("Test 'Catch it' button", () => {
   it("Ivysaur should disappear from 'show free' list", async () => {
-    const { findByRole, findByText, findByTestId, queryByTestId } = render(
+    const { findByRole, findByTestId, queryByTestId } = renderWithProviders(
       <App />
     );
-    await act(async () => {
-      userEvent.click(await findByRole("button", { name: /show free/i }));
-      userEvent.click(await findByText(/ivysaur/i));
-      userEvent.click(await findByTestId("ivysaur-details-button"));
-      await waitForElementToBeRemoved(() => queryByTestId("li-ivysaur"));
-    });
+    userEvent.click(await findByRole("button", { name: /show free/i }));
+    const listItemIvysaur = await findByTestId("li-ivysaur");
+    expect(listItemIvysaur).toBeInTheDocument();
+    userEvent.click(listItemIvysaur);
+    userEvent.click(await findByTestId("ivysaur-details-button"));
+    expect(queryByTestId("li-ivysaur")).not.toBeInTheDocument();
   });
 });
 

@@ -1,22 +1,17 @@
 import { useState, useEffect } from "react";
 import "./PokemonDetails.css";
-import axios from "axios";
 import CatchButton from "../CatchButton/CatchButton";
 import PokemonImage from "../PokemonImage/PokemonImage";
 import { useMyPokemon } from "../../context/MyPokemonContext";
 import { capitalize, leftPad } from "../../utils/string";
 import { PokemonItem } from "../../interfaces/pokemonItem";
-import { PokemonDetails as PokemonDetailsType } from "../../interfaces/pokemonDetails";
+import usePokemonDetails from "../../hooks/usePokemonDetails";
 
 type PokemonDetailsProps = {
-  selectedPokemon: PokemonItem | null;
+  selectedPokemon: PokemonItem | undefined;
 };
 
 function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
-  const [pokemonData, setPokemonData] = useState<PokemonDetailsType | null>(
-    null
-  );
-  const [loadingMessage, setLoadingMessage] = useState<string | null>();
   const { myPokemonArray, setMyPokemonArray } = useMyPokemon();
   const [isCaught, setIsCaught] = useState<boolean | null>(null);
 
@@ -35,47 +30,41 @@ function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
     setIsCaught((prevState) => !prevState);
   };
 
-  useEffect(() => {
-    const source = axios.CancelToken.source();
-    let isSubscribed = true;
-    // fetching pokemon details from api
-    const getPokemenDetails = async (url: string) => {
-      try {
-        setLoadingMessage("Loading...");
-        const result = await axios.get(url, {
-          cancelToken: source.token,
-        });
-        if (isSubscribed) {
-          setPokemonData(result.data);
-          setLoadingMessage("");
-        }
-      } catch (err) {
-        if (isSubscribed)
-          setLoadingMessage(`Error! Cannot retrieve Pokemon Details:  ${err}`);
-      }
-    };
+  const {
+    status,
+    data: pokemonData,
+    error,
+  } = usePokemonDetails(selectedPokemon);
 
-    if (selectedPokemon) {
-      getPokemenDetails(selectedPokemon.url);
-    }
-    return () => {
-      isSubscribed = false;
-      source.cancel();
-    };
-  }, [selectedPokemon]);
+  let loadingMessage: null | string;
+
+  switch (status) {
+    case "loading":
+      loadingMessage = "Loading...";
+      break;
+    case "error":
+      loadingMessage = `Error! ${error instanceof Error ? error.message : ""}`;
+      break;
+    default:
+      loadingMessage = null;
+  }
 
   if (loadingMessage) {
     return (
-      <div className="pokemon-container">
-        <div className="message">{loadingMessage}</div>
+      <div className="pokemon-details">
+        <div className="pokemon-container">
+          <div className="message">{loadingMessage}</div>
+        </div>
       </div>
     );
   }
 
   if (!pokemonData) {
     return (
-      <div className="pokemon-container">
-        <div className="message">No pokemon selected</div>
+      <div className="pokemon-details">
+        <div className="pokemon-container">
+          <div className="message">No pokemon selected</div>
+        </div>
       </div>
     );
   }
