@@ -14,16 +14,18 @@ const inexistentPokemon = {
 
 describe("Loading a inexistent pokemon", () => {
   it("Show error message if inexistent pokemon", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation();
     const { findByText } = renderWithProviders(
       <PokemonDetails selectedPokemon={inexistentPokemon} />
     );
     expect(await findByText(/error/i)).toBeInTheDocument();
+    spy.mockRestore();
   });
 });
 
 describe("Render pokemon details", () => {
   it("Show no pokemon selected", () => {
-    renderWithProviders(<PokemonDetails selectedPokemon={null} />, {});
+    renderWithProviders(<PokemonDetails selectedPokemon={undefined} />, {});
     expect(screen.getByText(/no pokemon selected/i)).toBeInTheDocument();
   });
 
