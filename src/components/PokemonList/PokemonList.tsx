@@ -59,7 +59,7 @@ function PokemonList({ selectedPokemon, setSelectedPokemon }: PokemonListType) {
 
     if (status === "loading") setLoadingMessage("Loading...");
 
-    if (error) setLoadingMessage(error.message);
+    if (error instanceof Error) setLoadingMessage(error.message);
 
     if (data) {
       try {

@@ -1,13 +1,13 @@
 import { useQuery } from "react-query";
-import { PokemonDetails } from "../interfaces/pokemonDetails";
 import { PokemonItem } from "../interfaces/pokemonItem";
 import { getPokemonDetails } from "../services/pokemonDetailsService";
 
-const usePokemonDetails = (pokemon: PokemonItem | null) => {
-  return useQuery<PokemonDetails | undefined, Error>(
+const usePokemonDetails = (pokemon: PokemonItem | undefined) => {
+  return useQuery(
     ["pokemon-details", pokemon?.name],
     () => {
-      if (pokemon) return getPokemonDetails(pokemon?.url);
+      if (pokemon == null) throw new Error("No pokemon selected");
+      return getPokemonDetails(pokemon?.url);
     },
     { enabled: !!pokemon, retry: false }
   );
