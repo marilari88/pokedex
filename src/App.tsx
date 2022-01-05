@@ -8,9 +8,9 @@ import { QueriesProvider } from "./providers/QueriesProvider";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 function App() {
-  const [selectedPokemon, setSelectedPokemon] = useState<PokemonItem | null>(
-    null
-  );
+  const [selectedPokemon, setSelectedPokemon] = useState<
+    PokemonItem | undefined
+  >(undefined);
 
   return (
     <div className="App">

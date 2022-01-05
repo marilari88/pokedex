@@ -7,7 +7,7 @@ describe("Loading simulation", () => {
     const setSelectedPokemonMock = jest.fn();
     renderWithProviders(
       <PokemonList
-        selectedPokemon={null}
+        selectedPokemon={undefined}
         setSelectedPokemon={setSelectedPokemonMock}
       />
     );
@@ -20,7 +20,7 @@ describe("Testing get request", () => {
     const setSelectedPokemonMock = jest.fn();
     const { findByText, queryByText, findAllByRole } = renderWithProviders(
       <PokemonList
-        selectedPokemon={null}
+        selectedPokemon={undefined}
         setSelectedPokemon={setSelectedPokemonMock}
       />
     );

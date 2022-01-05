@@ -8,7 +8,7 @@ import { PokemonItem } from "../../interfaces/pokemonItem";
 import usePokemonDetails from "../../hooks/usePokemonDetails";
 
 type PokemonDetailsProps = {
-  selectedPokemon: PokemonItem | null;
+  selectedPokemon: PokemonItem | undefined;
 };
 
 function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
@@ -43,7 +43,7 @@ function PokemonDetails({ selectedPokemon }: PokemonDetailsProps) {
       loadingMessage = "Loading...";
       break;
     case "error":
-      loadingMessage = `Error! ${error?.message}`;
+      loadingMessage = `Error! ${error instanceof Error ? error.message : ""}`;
       break;
     default:
       loadingMessage = null;
