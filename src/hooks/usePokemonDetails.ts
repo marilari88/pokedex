@@ -9,7 +9,7 @@ const usePokemonDetails = (pokemon: PokemonItem | undefined) => {
       if (pokemon == null) throw new Error("No pokemon selected");
       return getPokemonDetails(pokemon?.url);
     },
-    { enabled: !!pokemon, retry: false }
+    { enabled: !!pokemon }
   );
 };
 
